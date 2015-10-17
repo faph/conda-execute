@@ -12,7 +12,7 @@ import time
 import shutil
 import stat
 import subprocess
- 
+
 import conda.api
 import conda.lock
 import conda.resolve
@@ -33,11 +33,11 @@ def extract_env_spec(handle):
         if in_spec is True:
             # FIXME: we are pretty fragile with whitespace at this point.
             if line.startswith('#  - '):
-                spec.append(line[5:].strip()) 
+                spec.append(line[5:].strip())
             elif not line.startswith('# '):
                 # We're done with the spec.
                 break
-                
+
         elif line.strip() == '# conda execute env:':
             in_spec = True
     return spec
@@ -73,7 +73,7 @@ def extract_spec(fh):
     if platform.system() != 'Windows':
         spec.setdefault('run_with', ['/bin/sh', '-c'])
 
-    return spec 
+    return spec
 
 
 def read_shebang(line):
@@ -155,7 +155,7 @@ def create_env(spec, force_recreation=False, extra_channels=()):
         r = conda.resolve.Resolve(index)
         full_list_of_packages = sorted(r.solve(spec))
 
-        # Put out a newline. Conda's solve doesn't do it for us. 
+        # Put out a newline. Conda's solve doesn't do it for us.
         log.info('\n')
 
         for tar_name in full_list_of_packages:
@@ -209,8 +209,8 @@ def main():
     parser.add_argument('--code', '-c', nargs='*', action=StdIn,
                         help='The code to execute.')
     parser.add_argument('remaining_args', help='Remaining arguments are passed through to the called script.',
-                        nargs=argparse.REMAINDER) 
-    args = parser.parse_args() 
+                        nargs=argparse.REMAINDER)
+    args = parser.parse_args()
 
     log_level = logging.WARN
     if args.verbose:
