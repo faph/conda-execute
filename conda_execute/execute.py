@@ -123,6 +123,7 @@ def execute_within_env(env_prefix, cmd):
     # The default is a non-zero return code. Successful processes will set this themselves.
     code = 42
     try:
+        log.debug('Executing command: {}'.format(cmd))
         code = subprocess.check_call(cmd, env=environ, shell=use_shell)
     except subprocess.CalledProcessError as exception:
         code = exception.returncode
