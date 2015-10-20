@@ -111,10 +111,8 @@ def execute_within_env(env_prefix, cmd):
         paths = [os.path.join(env_prefix),
                  os.path.join(env_prefix, 'Scripts'),
                  os.path.join(env_prefix, 'bin')]
-        use_shell = True
     else:
         paths = [os.path.join(env_prefix, 'bin')]
-        use_shell = False
 
     environ = os.environ.copy()
     # Note os.pathsep != os.path.sep. It caught me out too ;)
@@ -123,8 +121,9 @@ def execute_within_env(env_prefix, cmd):
     # The default is a non-zero return code. Successful processes will set this themselves.
     code = 42
     try:
+        os.chdir(env_prefix)  # enable cmd relative to prefix
         log.debug('Executing command: {}'.format(cmd))
-        code = subprocess.check_call(cmd, env=environ, shell=use_shell)
+        code = subprocess.check_call(cmd, env=environ)
     except subprocess.CalledProcessError as exception:
         code = exception.returncode
         log.warn('{}: {}'.format(type(exception).__name__, exception))
